@@ -30,6 +30,7 @@ class OutInstructionTest {
 
   @Test
   void executeValid() {
+    // set EAX to 5
     registers.set(EAX, 5);
     OutInstruction instruction = new OutInstruction(null, EAX);
     instruction.execute(machine);
@@ -38,6 +39,7 @@ class OutInstructionTest {
 
   @Test
   void executeValidTwo() {
+    // set EAX to -5
     registers.set(EAX, -5);
     Instruction instruction = new OutInstruction(null, EAX);
     instruction.execute(machine);
