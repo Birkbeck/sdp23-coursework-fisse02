@@ -29,9 +29,9 @@ class MovInstructionTest {
 
   @Test
   void executeValid() {
-    Instruction instruction = new MovInstruction(null, EAX, 1);
+    Instruction instruction = new MovInstruction(null, EAX, 2);
     instruction.execute(machine);
-    Assertions.assertEquals(1, machine.getRegisters().get(EAX));
+    Assertions.assertEquals(2, machine.getRegisters().get(EAX));
   }
 
   @Test
