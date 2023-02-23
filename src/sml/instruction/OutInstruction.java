@@ -10,28 +10,25 @@ import sml.RegisterName;
  * @author Faisal Isse
  */
 
-public class MulInstruction extends Instruction {
+public class OutInstruction extends Instruction {
 	private final RegisterName result;
-	private final RegisterName source;
 
-	public static final String OP_CODE = "mul";
+	public static final String OP_CODE = "out";
 
-	public MulInstruction(String label, RegisterName result, RegisterName source) {
+	public OutInstruction(String label, RegisterName result) {
 		super(label, OP_CODE);
 		this.result = result;
-		this.source = source;
 	}
 
 	@Override
 	public int execute(Machine m) {
 		int value1 = m.getRegisters().get(result);
-		int value2 = m.getRegisters().get(source);
-		m.getRegisters().set(result, value1 * value2);
+		System.out.println("Print the contents " + result + " on the console " + value1);
 		return NORMAL_PROGRAM_COUNTER_UPDATE;
 	}
 
 	@Override
 	public String toString() {
-		return getLabelString() + getOpcode() + " " + result + " " + source;
+		return getLabelString() + getOpcode() + " " + result ;
 	}
 }

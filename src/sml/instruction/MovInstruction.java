@@ -10,23 +10,21 @@ import sml.RegisterName;
  * @author Faisal Isse
  */
 
-public class MulInstruction extends Instruction {
+public class MovInstruction extends Instruction {
 	private final RegisterName result;
-	private final RegisterName source;
+	private final int source;
 
-	public static final String OP_CODE = "mul";
+	public static final String OP_CODE = "mov";
 
-	public MulInstruction(String label, RegisterName result, RegisterName source) {
+	public MovInstruction(String label, RegisterName result, int value) {
 		super(label, OP_CODE);
 		this.result = result;
-		this.source = source;
+		this.source = value;
 	}
 
 	@Override
 	public int execute(Machine m) {
-		int value1 = m.getRegisters().get(result);
-		int value2 = m.getRegisters().get(source);
-		m.getRegisters().set(result, value1 * value2);
+		m.getRegisters().set(result, source);
 		return NORMAL_PROGRAM_COUNTER_UPDATE;
 	}
 

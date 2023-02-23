@@ -7,7 +7,7 @@ import sml.RegisterName;
 // TODO: write a JavaDoc for the class
 
 /**
- * @author
+ * @author Faisal Isse
  */
 
 public class DivInstruction extends Instruction {
