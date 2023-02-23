@@ -30,11 +30,11 @@ class DivInstructionTest {
 
   @Test
   void executeValid() {
-    registers.set(EAX, 6);
+    registers.set(EAX, 9);
     registers.set(EBX, 3);
     Instruction instruction = new DivInstruction(null, EAX, EBX);
     instruction.execute(machine);
-    Assertions.assertEquals(2, machine.getRegisters().get(EAX));
+    Assertions.assertEquals(3, machine.getRegisters().get(EAX));
   }
 
   @Test
