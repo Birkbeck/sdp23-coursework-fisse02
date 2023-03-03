@@ -4,12 +4,10 @@ import sml.Instruction;
 import sml.Machine;
 import sml.RegisterName;
 
-// TODO: write a JavaDoc for the class
-
 /**
- * @author Faisal Isse
+ @author Faisal Isse
+ * Multiply the contents of registers {result} and {source} and store the result in register {result}
  */
-
 public class MulInstruction extends Instruction {
 	private final RegisterName result;
 	private final RegisterName source;
@@ -32,6 +30,6 @@ public class MulInstruction extends Instruction {
 
 	@Override
 	public String toString() {
-		return getLabelString() + getOpcode() + " " + result + " " + source;
+		return "MulInstruction { " + "label=" + getLabelString() + ", " + "opcode=" + getOpcode() + ", " + "result=" + result + ", " + "source=" + source + '}';
 	}
 }

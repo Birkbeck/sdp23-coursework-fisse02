@@ -1,11 +1,9 @@
 package sml;
 
-import java.io.IOException;
 
 public class Main {
 	/**
 	 * Initialises the system and executes the program.
-	 *
 	 * @param args name of the file containing the program text.
 	 */
 	public static void main(String... args) {
@@ -28,8 +26,8 @@ public class Main {
 
 			System.out.println("Values of registers at program termination:" + m.getRegisters() + ".");
 		}
-		catch (IOException e) {
-			System.out.println("Error reading the program from " + args[0]);
+		catch (Exception e) {
+			System.out.println("Error reading the program from " + e.getMessage());
 		}
 	}
 }

@@ -3,8 +3,10 @@ package sml;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-// TODO: write a JavaDoc for the class
+import static sml.Instruction.NORMAL_PROGRAM_COUNTER_UPDATE;
+
 
 /**
  *
@@ -21,8 +23,13 @@ public final class Labels {
 	 */
 	public void addLabel(String label, int address) {
 		Objects.requireNonNull(label);
-		// TODO: Add a check that there are no label duplicates.
+		// That there are no label duplicates
+		if(labels.containsKey(label)){
+			System.err.println("No two instructions can have the same label " + label);
+			System.exit(-1);
+		}
 		labels.put(label, address);
+
 	}
 
 	/**
@@ -32,9 +39,14 @@ public final class Labels {
 	 * @return the address the label refers to
 	 */
 	public int getAddress(String label) {
-		// TODO: Where can NullPointerException be thrown here?
-		//       (Write an explanation.)
-		//       Add code to deal with non-existent labels.
+
+		// If the label does not already contain in the nLabels return NORMAL_PROGRAM_COUNTER_UPDATE
+		// to indicate that the instruction with the next address is to be executed
+		if(!labels.containsKey(label)){
+			System.err.println("Label " + label + " doesn't exist ");
+			return NORMAL_PROGRAM_COUNTER_UPDATE;
+		}
+
 		return labels.get(label);
 	}
 
@@ -46,11 +58,27 @@ public final class Labels {
 	 */
 	@Override
 	public String toString() {
-		// TODO: Implement the method using the Stream API (see also class Registers).
-		return "";
+		return labels.entrySet().stream()
+				.sorted(Map.Entry.comparingByKey())
+				.map(e -> e.getKey() + " -> " + e.getValue())
+				.collect(Collectors.joining(", ", "[", "]")) ;
 	}
 
-	// TODO: Implement equals and hashCode (needed in class Machine).
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o instanceof Labels other) {
+			return labels.equals(other.labels);
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return labels.hashCode();
+	}
+
 
 	/**
 	 * Removes the labels

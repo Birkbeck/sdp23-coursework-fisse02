@@ -4,12 +4,11 @@ import sml.Instruction;
 import sml.Machine;
 import sml.RegisterName;
 
-// TODO: write a JavaDoc for the class
 
 /**
  * @author Faisal Isse
+ * Print the contents of register {result} on the console
  */
-
 public class OutInstruction extends Instruction {
 	private final RegisterName result;
 
@@ -29,6 +28,6 @@ public class OutInstruction extends Instruction {
 
 	@Override
 	public String toString() {
-		return getLabelString() + getOpcode() + " " + result ;
+		return "OutInstruction { " + "label=" + getLabelString() + ", " + "opcode=" + getOpcode() + ", " + "result=" + result + '}';
 	}
 }

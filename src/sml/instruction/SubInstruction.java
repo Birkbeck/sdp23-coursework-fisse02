@@ -4,12 +4,11 @@ import sml.Instruction;
 import sml.Machine;
 import sml.RegisterName;
 
-// TODO: write a JavaDoc for the class
 
 /**
- * @author Faisal Isse
+ @author Faisal Isse
+  * Subtract the contents of register {result} from the contents of {source} and store the result in register {result}
  */
-
 public class SubInstruction extends Instruction {
 	private final RegisterName result;
 	private final RegisterName source;
@@ -32,6 +31,6 @@ public class SubInstruction extends Instruction {
 
 	@Override
 	public String toString() {
-		return getLabelString() + getOpcode() + " " + result + " " + source;
+		return "SubInstruction { " + "label=" + getLabelString() + ", " + "opcode=" + getOpcode() + ", " + "result=" + result + ", " + "source=" + source + '}';
 	}
 }

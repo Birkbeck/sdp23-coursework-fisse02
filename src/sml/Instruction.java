@@ -1,6 +1,5 @@
 package sml;
 
-// TODO: write a JavaDoc for the class
 
 /**
  * Represents an abstract instruction.
@@ -38,8 +37,8 @@ public abstract class Instruction {
 	 *
 	 * @param machine the machine the instruction runs on
 	 * @return the new program counter (for jump instructions)
-	 *          or NORMAL_PROGRAM_COUNTER_UPDATE to indicate that
-	 *          the instruction with the next address is to be executed
+	 *          or
+	 *
 	 */
 
 	public abstract int execute(Machine machine);
@@ -48,10 +47,8 @@ public abstract class Instruction {
 		return (getLabel() == null) ? "" : getLabel() + ": ";
 	}
 
-	// TODO: What does abstract in the declaration below mean?
-	//       (Write a short explanation.)
+	// This means that all concrete subclasses of this abstract class is required to implement the toString() methode
 	@Override
 	public abstract String toString();
 
-	// TODO: Make sure that subclasses also implement equals and hashCode (needed in class Machine).
 }

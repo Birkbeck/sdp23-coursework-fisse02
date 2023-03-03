@@ -4,12 +4,10 @@ import sml.Instruction;
 import sml.Machine;
 import sml.RegisterName;
 
-// TODO: write a JavaDoc for the class
-
 /**
  * @author Faisal Isse
+ * Store integer {source} in register {result}
  */
-
 public class MovInstruction extends Instruction {
 	private final RegisterName result;
 	private final int source;
@@ -30,6 +28,6 @@ public class MovInstruction extends Instruction {
 
 	@Override
 	public String toString() {
-		return getLabelString() + getOpcode() + " " + result + " " + source;
+		return "MovInstruction { " + "label=" + getLabelString() + ", " + "opcode=" + getOpcode() + ", " + "result=" + result + ", " + "source=" + source + '}';
 	}
 }

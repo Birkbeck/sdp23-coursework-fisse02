@@ -12,19 +12,15 @@ import static sml.Registers.Register.EAX;
 
 class MovInstructionTest {
   private Machine machine;
-  private Registers registers;
 
   @BeforeEach
   void setUp() {
     machine = new Machine(new Registers());
-    registers = machine.getRegisters();
-    //...
   }
 
   @AfterEach
   void tearDown() {
     machine = null;
-    registers = null;
   }
 
   @Test
@@ -36,8 +32,8 @@ class MovInstructionTest {
 
   @Test
   void executeValidTwo() {
-    Instruction instruction = new MovInstruction(null, EAX, 2);
+    Instruction instruction = new MovInstruction(null, EAX, -3);
     instruction.execute(machine);
-    Assertions.assertEquals(2, machine.getRegisters().get(EAX));
+    Assertions.assertEquals(-3, machine.getRegisters().get(EAX));
   }
 }

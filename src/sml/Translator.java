@@ -32,7 +32,7 @@ public final class Translator {
     // prog (the program)
     // return "no errors were detected"
 
-    public void readAndTranslate(Labels labels, List<Instruction> program) throws IOException {
+    public void readAndTranslate(Labels labels, List<Instruction> program) throws IOException, IllegalArgumentException {
         try (var sc = new Scanner(new File(fileName), StandardCharsets.UTF_8)) {
             labels.reset();
             program.clear();
@@ -44,8 +44,11 @@ public final class Translator {
 
                 Instruction instruction = getInstruction(label);
                 if (instruction != null) {
-                    if (label != null)
+
+                    if (label != null) {
                         labels.addLabel(label, program.size());
+                    }
+
                     program.add(instruction);
                 }
             }
@@ -109,18 +112,8 @@ public final class Translator {
                 return new JnzInstruction(label, Register.valueOf(r), s);
             }
 
-            // TODO: add code for all other types of instructions
-
-
-
-            // TODO: Then, replace the switch by using the Reflection API
-
-            // TODO: Next, use dependency injection to allow this machine class
-            //       to work with different sets of opcodes (different CPUs)
-
-            default -> {
+            default ->
                 System.out.println("Unknown instruction: " + opcode);
-            }
         }
         return null;
     }
