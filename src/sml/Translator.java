@@ -1,9 +1,8 @@
 package sml;
 
-import sml.instruction.*;
-
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Scanner;
@@ -25,14 +24,14 @@ public final class Translator {
     private String line = "";
 
     public Translator(String fileName) {
-        this.fileName =  fileName;
+        this.fileName = fileName;
     }
 
     // translate the small program in the file into lab (the labels) and
     // prog (the program)
     // return "no errors were detected"
 
-    public void readAndTranslate(Labels labels, List<Instruction> program) throws IOException, IllegalArgumentException {
+    public void readAndTranslate(Labels labels, List<Instruction> program) throws IOException {
         try (var sc = new Scanner(new File(fileName), StandardCharsets.UTF_8)) {
             labels.reset();
             program.clear();
@@ -64,60 +63,80 @@ public final class Translator {
      * The input line should consist of a single SML instruction,
      * with its label already removed.
      */
-    private Instruction getInstruction(String label) {
+    private Instruction getInstruction(String label){
         if (line.isEmpty())
             return null;
-
-        String opcode = scan();
-        switch (opcode) {
-            case AddInstruction.OP_CODE -> {
-                String r = scan();
-                String s = scan();
-                return new AddInstruction(label, Register.valueOf(r), Register.valueOf(s));
-            }
-
-            case SubInstruction.OP_CODE -> {
-                String r = scan();
-                String s = scan();
-                return new SubInstruction(label, Register.valueOf(r), Register.valueOf(s));
-            }
-
-
-            case MulInstruction.OP_CODE -> {
-                String r = scan();
-                String s = scan();
-                return new MulInstruction(label, Register.valueOf(r), Register.valueOf(s));
-            }
-
-            case DivInstruction.OP_CODE -> {
-                String r = scan();
-                String s = scan();
-                return new DivInstruction(label, Register.valueOf(r), Register.valueOf(s));
-            }
-
-            case MovInstruction.OP_CODE -> {
-                String r = scan();
-                String s = scan();
-                return new MovInstruction(label, Register.valueOf(r), Integer.parseInt(s));
-            }
-
-            case OutInstruction.OP_CODE -> {
-                String r = scan();
-                return new OutInstruction(label, Register.valueOf(r));
-            }
-
-            case JnzInstruction.OP_CODE -> {
-                String r = scan();
-                String s = scan();
-                return new JnzInstruction(label, Register.valueOf(r), s);
-            }
-
-            default ->
-                System.out.println("Unknown instruction: " + opcode);
+        try {
+            String opcode = scan();
+            opcode = opcode.substring(0, 1).toUpperCase() + opcode.substring(1);
+            return (Instruction) builder(label, opcode);
+        } catch (ClassNotFoundException e) {
+            System.out.println("Unknown instruction: " + e.getMessage());
         }
         return null;
     }
 
+
+    /**
+     * Translates the current line into an instruction with the given label
+     *
+     * @param label the instruction label
+     * @param opcode operation name
+     * @return the new instruction
+     * <p>
+     * uses reflection to create the instances
+     */
+    public Object builder(String label, String opcode) throws ClassNotFoundException {
+        String className = "sml.instruction." + opcode + "Instruction";
+
+        for (Constructor<?> candidateConstructor : Class.forName(className).getConstructors()) {
+            try {
+                Object[] parameterObjs = new Object[candidateConstructor.getParameterCount()];
+                parameterObjs[0] = label;
+                for (int i = 1; i < parameterObjs.length; i++) {
+                    String s = scan();
+                    // returns true  if s is a Register
+                    boolean enumCheck = isRegister(s, Register.class);
+                    if (enumCheck) {
+                        parameterObjs[i] = Register.valueOf(s);
+                    } else {
+                        if (isStringDigit(s)) {
+                            parameterObjs[i] = Integer.parseInt(scan());
+                        } else {
+                            // if s is not Register or Integer
+                            parameterObjs[i] = s;
+                        }
+
+                    }
+
+                }
+
+                return candidateConstructor.newInstance(parameterObjs);
+            } catch (Exception e) {
+                System.out.println("Error ....");
+            }
+        }
+
+        return null;
+    }
+
+    public static boolean isStringDigit(String str) {
+        for (char c : str.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isRegister(String value, Class<? extends Enum<?>> enumClass) {
+        for (Enum<?> enumValue : enumClass.getEnumConstants()) {
+            if (enumValue.name().equals(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private String getLabel() {
         String word = scan();
